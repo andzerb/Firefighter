@@ -1,3 +1,5 @@
+#include <Encoder.h>
+
 #include <Servo.h>
 
 String inputString = "";         // a string to hold incoming data
@@ -17,7 +19,7 @@ const boolean yInvert = true;
 
 void setup(){
    // initialize serial:
-  Serial.begin(115200);
+  Serial.begin(230400);
   
   // reserve 200 bytes for the inputString:
   inputString.reserve(200);
@@ -53,10 +55,32 @@ void motorsStalled(boolean *stalled, int pins[], int threshold){
     }
   }
 }
-boolean Move(int Degrees, int power){
-  power =  power * 255/100;
-  Serial.print(degreetoRad(Degrees));
-  Serial.print(" ");
+void Move(int Degrees, int power, int distance){
+  power =  power * 2.55;
+  int x = cos(degreetoRad(Degrees)) * power;
+  int y = sin(degreetoRad(Degrees)) * power;
+  int xPow = 1;
+  
+  boolean xB = xInvert; //true if not changed
+  boolean yB = yInvert;
+  if(x<0){ // invert the directions (make them false) to go backward
+    xB *= -1;
+  }
+  if(y<0){
+    yB *= -1;
+  }
+  digitalWrite(directionPins[0], xB);
+  digitalWrite(directionPins[1], yB);
+  digitalWrite(directionPins[2], xB);
+  digitalWrite(directionPins[3], yB);
+  analogWrite(motorPins[0], x);
+  analogWrite(motorPins[1], x);
+  analogWrite(motorPins[2], y);
+  analogWrite(motorPins[3], y);
+
+}
+void Deadmove(int Degrees, int power){
+  power =  power * 2.55;
   int x = cos(degreetoRad(Degrees)) * power;
   int y = sin(degreetoRad(Degrees)) * power;
   boolean xB = xInvert; //true if not changed
@@ -67,9 +91,6 @@ boolean Move(int Degrees, int power){
   if(y<0){
     yB *= -1;
   }
-  Serial.print(x);
-  Serial.print(" ");
-  Serial.println(y);
   digitalWrite(directionPins[0], xB);
   digitalWrite(directionPins[1], yB);
   digitalWrite(directionPins[2], xB);
@@ -132,9 +153,6 @@ int pingSensor(int pingPin){
 
   return cm;
 }
-
-
-
 long microsecondsToInches(long microseconds)
 {
   // According to Parallax's datasheet for the PING))), there are

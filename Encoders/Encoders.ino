@@ -10,17 +10,18 @@
 //   Best Performance: both pins have interrupt capability
 //   Good Performance: only the first pin has interrupt capability
 //   Low Performance:  neither pin has interrupt capability
-Encoder myEnc(5, 6);
+Encoder myEnc(4, 5);
 //   avoid using pins with LEDs attached
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Basic Encoder Test:");
 }
 
-long oldPosition  = -999;
+long oldPosition  = -999999;
 
 void loop() {
+  analogWrite(6,150);
   long newPosition = myEnc.read();
   if (newPosition != oldPosition) {
     oldPosition = newPosition;
