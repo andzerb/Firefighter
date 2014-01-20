@@ -16,10 +16,10 @@ Adafruit_DCMotor *motor1 = AFMS.getMotor(1);
 Adafruit_DCMotor *motor2 = AFMS.getMotor(2);
 Adafruit_DCMotor *motor3 = AFMS.getMotor(3);
 Adafruit_DCMotor *motor4 = AFMS.getMotor(4);
-Encoder enc1(22,2);
-Encoder enc2(24,3);
-Encoder enc3(26,18);
-Encoder enc4(28,19);
+Encoder enc1(2,4);
+Encoder enc2(10,11);
+Encoder enc3(3,5);
+Encoder enc4(12,13);
 const float pi = 3.1415926535;
 const float mmpercount = 0.08886;
 const int threshold = 700;
@@ -48,8 +48,8 @@ void setup(){
   enc2.write(0);
   enc3.write(0);
   enc4.write(0);
-  xreq = 500;
-  yreq = 500;
+  xreq = 50;
+  yreq = 0;
   for(int i = 0; i < 4; i++){wheelPowers[i] = 150;}
   delay(1000);
  
