@@ -1,6 +1,6 @@
 import sys
 import serial
-MCU = serial.Serial('/dev/ttyACM0', 115200);
+MCU = serial.Serial('/dev/ttyACM1', 115200);
 
 while True:
     char = sys.stdin.read(1);

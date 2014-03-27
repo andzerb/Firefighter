@@ -1,3 +1,5 @@
+#include <Servo.h>
+
 const int switchPins[4] = {
   2, 3, 4, 5
 };
@@ -11,14 +13,18 @@ const int flamePins[2] = {
 const int lightPins[4] = {
   A2, A3, A4, A5
 };
+const int servoPin = 8;
 
 const boolean xInvert = true;
 const boolean yInvert = true;
 const int flameThreshold = 700;
 
+int cycle = 0;
+Servo turret;
+
 void setup() {
   Serial.begin(115200);
-
+  turret.attach(servoPin);
   for (int i = 0; i < 4; i++) {
     pinMode(switchPins[i], INPUT);
   }
@@ -38,11 +44,15 @@ void setup() {
 }
 void loop()
 {
-  delay(10);
+  Serial.println(cycle);
   Serial.print("Okay "); // If the brain sees anything different than a fully spelled okay, with a capital O and a space, the line will be rejected.
   // Serious stuff goes here!
+  turret.write(0);
+  delay(500);
   Serial.print("F1L"); Serial.print(flameSensor(flamePins[0])); // Start with the first flame sensor ("f"), the one to the left ("l"). The orientation is for debug purposes.
-  Serial.print("F2R"); Serial.print(flameSensor(flamePins[1])); // Then print the second flame sensor's reading
+  turret.write(180);
+  delay(500);
+  Serial.print("F2R"); Serial.print(flameSensor(flamePins[0])); // Then print the second flame sensor's reading
   
   for(int i = 0; i < 4; i++){
     Serial.print("S"); Serial.print(i + 1); Serial.print(digitalRead(switchPins[i])); // I don't need orientation on any others because the 1 refers to the top as protocol.
