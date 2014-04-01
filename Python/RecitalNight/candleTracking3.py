@@ -3,12 +3,13 @@ import serial
 import time
 import math
 
-SIU = serial.Serial('/dev/ttyACM2', 115200, timeout=0.75)
-MCU = serial.Serial('/dev/ttyACM1', 115200, timeout=0.75)
+SIU = serial.Serial('/dev/ttyACM1', 115200, timeout=0.75)
+MCU = serial.Serial('/dev/ttyACM0', 115200, timeout=0.75)
 time.sleep(1);
 
 lowerThreshold=15
 upperThreshold=200
+f2 = 0
 
 if __name__ == "__main__":
     while f2 < upperThreshold:
@@ -18,7 +19,7 @@ if __name__ == "__main__":
         inputString = SIU.readline()
         SIU.flush();
         MCU.flush();
-        #print(inputString)
+        print(inputString)
         if(inputString.startswith("Okay ") and "L4" in inputString):
             f1index = inputString.index("F1L")
             f2index = inputString.index("F2M")
@@ -47,4 +48,5 @@ if __name__ == "__main__":
             f2index = inputString.index("F2M")
             f3index = inputString.index("F3R")
             f2 = int(inputString[f2index + 3:f3index])
+    time.sleep(2)
     MCU.write("Off\n")

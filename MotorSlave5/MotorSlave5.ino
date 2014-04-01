@@ -69,6 +69,12 @@ void loop()
     for(int i = 0; i < 4; i++){
      prevSpeeds[i] = readSpeeds[i]; 
     }
+    if(abs(readSpeeds[0])>=100 || abs(readSpeeds[1])>=100 || abs(readSpeeds[2]) >= 100 || abs(readSpeeds[3])>=100){
+      for(int i = 0; i < 4; i++){
+       wheelPowers[i] = 125;
+      }
+      
+    }
     if(abs(readSpeeds[0]) >= abs(xreq/mmpercount)){
       motor1->run(RELEASE);
       motor1->setSpeed(0);
@@ -113,6 +119,7 @@ void loop()
       enc2.write(0);
       enc3.write(0);
       enc4.write(0);
+      Serial.println("Done");
     }  
   }
   if (stringComplete && inputString.indexOf("On")==-1 && inputString.indexOf("Off")==-1) {
@@ -130,9 +137,8 @@ void loop()
     enc2.write(0);
     enc3.write(0);
     enc4.write(0);
-    wheelPowers[0] = 180;
-    wheelPowers[1] = 180
-    ;
+    wheelPowers[0] = 255;
+    wheelPowers[1] = 255;
     wheelPowers[2] = wheelPowers[0];
     wheelPowers[3] = wheelPowers[1]; 
     inputString = "";
